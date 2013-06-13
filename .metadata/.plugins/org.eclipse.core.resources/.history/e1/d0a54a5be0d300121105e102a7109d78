@@ -1,0 +1,78 @@
+package serverMain;
+
+public class MyServerHandler implements IoHandler {
+	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private IGameInfter igfter=null;
+	public MyServerHandler(IGameInfter g)
+	{
+		igfter=g;
+	}
+	/*
+	 *
+	 * 捕捉异常
+	 */
+	@Override
+	public void exceptionCaught(IoSession session, Throwable arg1)
+			throws Exception {
+		RemoveRoleSession(session);
+		logger.warning("服务器启动发生异常，have a exception : " + arg1.getMessage());
+	}
+
+	@Override
+	public void messageReceived(IoSession session, Object message)throws Exception {
+		NewClient newClient = (NewClient)message;
+		igfter.InterFaceWath(newClient.getDataBytes(), newClient);
+	}
+	@Override
+	public void messageSent(IoSession session, Object message) throws Exception {
+		logger.info("服务器成功发送信息: " + message.toString());
+	}
+	//移除角色的Session
+	void RemoveRoleSession(IoSession session)
+	{
+		if(session.containsAttribute("NewClient")) {
+			NewClient newClient = (NewClient) session.getAttribute("NewClient");
+			newClient.setSession(null);
+			if(newClient.getRoleInfo()!=null)
+				newClient.getRoleInfo().setSession(null);
+		}
+		
+	}
+	@Override
+	public void sessionClosed(IoSession session) throws Exception {
+		logger.info("there is a session closed");
+		CloseFuture future = session.close(true);
+		future.addListener(new IoFutureListener<IoFuture>() {
+			public void operationComplete(IoFuture future) {
+				if (future instanceof CloseFuture) {
+					((CloseFuture) future).setClosed();
+					logger.info("have do the future set to closed");
+				}
+			}
+		});
+		System.out.println("角色退出移除角色");
+		RemoveRoleSession(session);
+	}			
+	@Override
+	public void sessionCreated(IoSession session) throws Exception { // TODO
+		// Auto-generated
+		// method
+		// stub
+		logger.info("there is a session created");
+
+	}
+	/*
+	 *
+	 * 回话空闲
+	 */
+	@Override
+	public void sessionIdle(IoSession session, IdleStatus arg1)
+			throws Exception { // TODO Auto-generated method stub
+		logger.info(session.getId() + "(SesssionID) is idle in the satate-->"+ arg1);
+	}
+
+	@Override
+	public void sessionOpened(IoSession arg0) throws Exception {
+		
+	}
+}

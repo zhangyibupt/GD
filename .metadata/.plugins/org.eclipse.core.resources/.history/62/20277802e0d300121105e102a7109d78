@@ -1,0 +1,69 @@
+package serverMain;
+
+public class SocketServerMain {
+	IoAcceptor acceptor = null;
+
+	SocketServerMain() {
+		acceptor = new NioSocketAcceptor();
+	}
+
+	public void bind(IGameInfter g){
+		 acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new GameCodecFactory())); 
+		 //配置CodecFactory      
+		 LoggingFilter log = new LoggingFilter();      
+		 log.setMessageReceivedLogLevel(LogLevel.INFO); 
+		 acceptor.getFilterChain().addLast("logger", log);
+		 acceptor.getSessionConfig().setReadBufferSize(200);
+		 acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
+		 acceptor.setHandler(new MyServerHandler(g));//配置handler    
+		 try {   
+			 acceptor.bind(new InetSocketAddress(12888));            
+		 } catch (IOException e) {    //TODO Auto-generated catch block       
+			 e.printStackTrace();              
+		}
+	 }
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args){
+		try {
+			flashSecurity.getInstance().start();
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StatrMain(new CMDManage());
+	}
+	public static void StatrMain(IGameInfter g)
+	{
+		DataBind();		
+		IoBuffer.setUseDirectBuffer(false);
+		SocketServerMain sm =new SocketServerMain();
+		sm.bind(g);
+	}
+	static void DataBind()
+	{
+		DbSkillInfo dsi=new DbSkillInfo();
+		dsi.GetSkillnfo();//获取技能要加载到怪物之前
+		
+		DbHeroInfo dh=new DbHeroInfo();
+		dh.GetHeroInfo();//获取武将
+		DbBookInfo dbb = new DbBookInfo();
+		dbb.GetBookInfo();
+		
+		DbMonsterInfo dminfo = new DbMonsterInfo();
+		dminfo.GetMonsterInfo();
+		
+		DbMonsterSett Dmtsett = new DbMonsterSett();
+		Dmtsett.GetMonSett();
+		
+		DbTaskInfo ts = new DbTaskInfo();
+		ts.GetTaskInfo();
+		
+		DbTaskEffect dts = new DbTaskEffect();
+		dts.GetTaskEffect();
+		System.out.println("数据库加载完毕");
+		
+	}
+}

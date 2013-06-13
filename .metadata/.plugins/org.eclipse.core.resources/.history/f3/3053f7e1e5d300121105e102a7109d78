@@ -1,0 +1,5 @@
+package serverMain;
+
+public class MinaConnection extends NetConnection {
+
+}

@@ -1,0 +1,64 @@
+package serverMain;
+
+public class MessageQueue implements Runnable {
+	private LinkedList<Message> messageList = new LinkedList<Message>();
+	private Thread runner;
+
+	public MessageQueue() {
+		runner = new Thread(this);
+		runner.start();
+	}
+
+	public void post(Message msg) {
+		synchronized (messageList) {
+			messageList.add(msg);
+			messageList.notify();
+		}
+	}
+
+	public Message pop() {
+		synchronized (messageList) {
+			try {
+				if (messageList.size() <= 0)
+					messageList.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return null;
+			}
+			if (messageList.size() <= 0)
+				return null;
+			return messageList.remove();
+		}
+	}
+
+	public Message peek() {
+		if (messageList.size() <= 0)
+			return null;
+		synchronized (messageList) {
+			return messageList.remove();
+		}
+	}
+
+	public void stop() {
+		synchronized (messageList) {
+			messageList.clear();
+			messageList.notify();
+		}
+		runner = null;
+	}
+
+	public void run() {
+		while (runner != null) {
+			Message msg = pop();
+			if (msg == null)
+				break;
+			if (!(msg.getSource() instanceof NetConnection)) {
+				System.out.println("wrong source:" + msg.getSource());
+				continue;
+			}
+			NetConnection conn = (NetConnection) msg.getSource();
+			conn.dispatchMessage(msg);
+		}
+		runner = null;
+	}
+}

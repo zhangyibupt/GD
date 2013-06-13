@@ -1,0 +1,9 @@
+package serverMain;
+/**
+ * 消息头
+ * @author 魁
+ *
+ */
+public class MessageCode {
+
+}

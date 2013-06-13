@@ -1,0 +1,5 @@
+package GameMain;
+
+public class AbstractNetServer {
+
+}

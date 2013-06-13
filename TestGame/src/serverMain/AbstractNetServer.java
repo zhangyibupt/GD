@@ -1,0 +1,97 @@
+package serverMain;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.mina.core.session.IoSession;
+
+public abstract class AbstractNetServer implements NetServerListener, NetConnectionListener {
+
+	protected Logger _log = Logger.getLogger(this.getClass());
+
+	private MinaNetServer netServer;
+
+	private int port;
+
+	private MessageCodecFactory factory;
+
+	private boolean running = false;
+
+	private int maxConnections = 2000;
+
+	public AbstractNetServer(int port) {// 默认为二进制消息
+		this(port, new AppMessageCodecFactory());
+	}
+
+	public AbstractNetServer(int port, MessageCodecFactory factory) {
+		this.port = port;
+		this.factory = factory;
+	}
+
+	public void start() {
+		if (running)
+			return;
+		netServer = new MinaNetServer();
+		netServer.setMaxConnections(maxConnections);
+		netServer.init(port, false);
+		netServer.addNetServerListener(this);
+		netServer.setMessageCodecFactory(factory);
+		running = netServer.start();
+	}
+
+	public void removeAllNetServerListener() {
+		netServer.removeAllNetServerListeners();
+	}
+
+	public void addNetServerListener(NetServerListener listener) {
+		netServer.addNetServerListener(listener);
+	}
+
+	public void messageArrived(NetConnection conn, Message msg) {
+		if (isRunning()) {
+			AppMessage appMsg = (AppMessage) msg;
+			if (appMsg.getType() == AppMessage.MESSAGE_TYPE_NULL) {
+				conn.sendMessage(null);// 回送一个空消息
+				return;
+			}
+			messageArrivedImpl(conn, appMsg);
+		}
+
+	}
+
+	public void stop() {
+		if (!running) {
+			return;
+		}
+		running = false;
+		try {
+			netServer.stop(); // 停止网络服务器
+		} catch (Exception e) {
+		}
+	}
+
+	public boolean isRunning() {
+		return running;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	protected boolean checkIP(String ip) {
+		return true;
+	}
+
+	public List<IoSession> getAllSession() {
+		return netServer.getAllSession();
+	}
+
+	public int getMaxConnections() {
+		return maxConnections;
+	}
+
+	public void setMaxConnections(int maxConnections) {
+		this.maxConnections = maxConnections;
+	}
+
+	public abstract void messageArrivedImpl(NetConnection conn, AppMessage appMsg);
+}

@@ -1,0 +1,32 @@
+package serverMain;
+
+public class Message {
+	private Object source;
+    private Object content;
+
+	public Message(Object content)
+	{
+		setContent(content);
+	}
+	public Message(Object content,Object source)
+	{
+		setContent(content);
+		setSource(source);
+	}
+    public Object getSource()
+    {
+        return source;
+    }
+    public Object getContent()
+    {
+        return content;
+    }
+    public void setSource(Object obj)
+    {
+        source = obj;
+    }
+    public void setContent(Object obj)
+    {
+        content = obj;
+    }
+}

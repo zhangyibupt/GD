@@ -1,0 +1,91 @@
+package serverMain;
+
+import java.io.Serializable;
+
+public class AppMessage extends Message implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static final int MESSAGE_TYPE_NULL = 0;
+
+	/** 登录,注册,帐号安全相关 */
+	public static final int MSG_AUTH = 0x100;
+
+	/** 世界 */
+	public static final int MSG_WORLD = 0x200;
+
+	/** 商店 */
+	public static final int MSG_SHOP = 0x270;
+
+	/** 场景 */
+	public static final int MSG_SCENE = 0x300;
+
+	/** 竞技场 */
+	public static final int MSG_ARENA = 0x370;
+
+	/** 任务 */
+	public static final int MSG_TASK = 0x420;
+
+	/** 战斗 */
+	public static final int MSG_FIGHT = 0x500;
+
+	/** 聊天 */
+	public static final int MSG_CHAT = 0x600;
+
+	/** 武将 */
+	public static final int MSG_HERO = 0x650;
+
+	/** 保护 */
+	public static final int MSG_PROTECT = 0xA00;
+
+	/** HTTP */
+	public static final int MSG_HTTP = 0xA70;
+
+	/** 跟存储服务器通信 */
+	public static final int MSG_SQL = 0xD00;
+
+	/** 跟配置服务器通信 */
+	public static final int MSG_CONFIG = 0xD40;
+
+	/** 日志 */
+	public static final int MSG_LOG = 0xD60;
+
+	/** 管理 */
+	public static final int MSG_SYSTEM = 0xD80;
+
+	/** 玩家 */
+	public static final int MSG_ROLE = 0xE00;
+
+	private int type;
+
+	public AppMessage(int type) {
+		this(type, 256);
+	}
+
+	public AppMessage(int type, int size) {
+		this(type, new ByteBuffer(size), null);
+	}
+
+	public AppMessage(int type, ByteBuffer buffer) {
+		this(type, buffer, null);
+	}
+
+	public AppMessage(int type, ByteBuffer buffer, Object source) {
+		super(buffer, source);
+		this.type = type;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public ByteBuffer getBuffer() {
+		return (ByteBuffer) getContent();
+	}
+
+	public String toString() {
+		return getClass().getName() + ":" + type + ";" + getBuffer().capacity();
+	}
+}

@@ -1,0 +1,54 @@
+package serverMain;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.service.IoAcceptor;
+import org.apache.mina.core.session.IdleStatus;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.logging.LogLevel;
+import org.apache.mina.filter.logging.LoggingFilter;
+import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+
+public class SocketServerMain {
+	IoAcceptor acceptor = null;
+
+	SocketServerMain() {
+		acceptor = new NioSocketAcceptor();
+	}
+
+	public void bind(){
+		 acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new GameCodecFactory())); 
+		 //配置CodecFactory      
+		 LoggingFilter log = new LoggingFilter();      
+		 log.setMessageReceivedLogLevel(LogLevel.INFO); 
+		 acceptor.getFilterChain().addLast("logger", log);
+		 acceptor.getSessionConfig().setReadBufferSize(200);
+		 acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
+		 acceptor.setHandler(new MyServerHandler(g));//配置handler    
+		 try {   
+			 acceptor.bind(new InetSocketAddress(12888));            
+		 } catch (IOException e) {    //TODO Auto-generated catch block       
+			 e.printStackTrace();              
+		}
+	 }
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args){
+		StatrMain();
+	}
+	public static void StatrMain()
+	{		
+		IoBuffer.setUseDirectBuffer(false);
+		SocketServerMain sm =new SocketServerMain();
+		sm.bind(g);
+	}
+	static void DataBind()
+	{
+		
+		
+	}
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.apache.mina.core.service.IoAcceptor"/>
+<fullyQualifiedTypeName name="org.apache.mina.transport.socket.nio.NioSocketAcceptor"/>
+<fullyQualifiedTypeName name="org.apache.mina.filter.logging.LoggingFilter"/>
+<fullyQualifiedTypeName name="org.apache.mina.filter.codec.ProtocolCodecFilter"/>
+<fullyQualifiedTypeName name="org.apache.mina.filter.logging.LogLevel"/>
+<fullyQualifiedTypeName name="org.apache.mina.core.session.IdleStatus"/>
+<fullyQualifiedTypeName name="java.net.InetSocketAddress"/>
+<fullyQualifiedTypeName name="org.apache.log4j.Logger"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.io.OutputStream"/>
+<fullyQualifiedTypeName name="org.apache.mina.core.service.IoHandler"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ConcurrentLinkedQueue"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="org.apache.mina.transport.socket.SocketAcceptor"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="org.apache.mina.transport.socket.DefaultSocketSessionConfig"/>
+<fullyQualifiedTypeName name="org.apache.mina.core.session.IoSession"/>
+<fullyQualifiedTypeName name="org.apache.mina.core.buffer.IoBuffer"/>
+<fullyQualifiedTypeName name="serverMain.NetServerListener"/>
+<fullyQualifiedTypeName name="serverMain.AbstractNetServer"/>
+<fullyQualifiedTypeName name="serverMain.AppMessageCodecFactory"/>
+<fullyQualifiedTypeName name="serverMain.NetConnection"/>
+<fullyQualifiedTypeName name="serverMain.AppMessage"/>
+<fullyQualifiedTypeName name="serverMain.ByteBuffer"/>
+<fullyQualifiedTypeName name="serverMain.MessageCode"/>
+<fullyQualifiedTypeName name="serverMain.Message"/>
+</qualifiedTypeNameHistroy>

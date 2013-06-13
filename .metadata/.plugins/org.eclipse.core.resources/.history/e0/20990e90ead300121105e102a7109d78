@@ -1,0 +1,13 @@
+package gameMain;
+
+public class Config {
+	/**
+	 * 游戏服务器客户端超时时间
+	 */
+	public final static int GAME_SERVER_TIMEOUT = 0;
+
+	/**
+	 * 游戏服务器检测客户端连接时间
+	 */
+	public final static int GAME_SERVER_PINGTIME = 0;
+}
